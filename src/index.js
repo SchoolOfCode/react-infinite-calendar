@@ -15,34 +15,16 @@ export {withRange, EVENT_TYPE} from './Calendar/withRange';
 export default class DefaultCalendar extends Component {
   static defaultProps = {
     Component: withDateSelection(Calendar),
-    interpolateSelection: (selected) => selected,
   };
-  state = {
-    selected: typeof this.props.selected !== 'undefined'
-      ? this.props.selected
-      : new Date(),
-  };
-  componentWillReceiveProps({selected}) {
-    if (selected !== this.props.selected) {
-      this.setState({selected});
-    }
-  }
-  handleSelect = (selected) => {
-    const {onSelect, interpolateSelection} = this.props;
-
-    if (typeof onSelect === 'function') { onSelect(selected); }
-
-    this.setState({selected: interpolateSelection(selected, this.state.selected)});
-  }
   render() {
     // eslint-disable-next-line no-unused-vars
-    const {Component, interpolateSelection, ...props} = this.props;
+    const {Component, ...props} = this.props;
 
     return (
       <Component
         {...props}
-        onSelect={this.handleSelect}
-        selected={this.state.selected}
+        onSelect={this.props.onSelect}
+        selected={this.props.selected}
       />
     );
   }
